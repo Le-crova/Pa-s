@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz - Qual país combina com você?</title>
+    <title>Quiz: Qual país combina com você?</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -14,9 +16,9 @@
             color: #333;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
-            padding: 30px 0;
+            padding: 20px;
         }
 
         .quiz-container {
@@ -24,16 +26,32 @@
             border-radius: 20px;
             padding: 30px;
             max-width: 800px;
-            width: 95%;
+            width: 100%;
             box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease-in-out;
         }
+
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
 
         h1 {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .progress-bar {
+            background: #eee;
+            border-radius: 10px;
+            height: 12px;
             margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .progress {
+            height: 12px;
+            width: 0%;
+            background: #66a6ff;
+            transition: width 0.3s;
         }
 
         .question {
@@ -44,19 +62,21 @@
             font-size: 1.3rem;
             margin-bottom: 15px;
             color: #222;
+            text-align: center;
         }
 
         .options {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
+            justify-content: center;
         }
 
         .option {
             background: #f0f0f0;
             border-radius: 15px;
             padding: 15px;
-            flex: 1 1 calc(33% - 10px);
+            flex: 1 1 calc(45% - 10px);
             text-align: center;
             cursor: pointer;
             transition: transform 0.3s, background 0.3s;
@@ -66,7 +86,7 @@
 
         .option img {
             max-width: 100%;
-            height: 120px;
+            height: 150px;
             border-radius: 10px;
             margin-bottom: 10px;
             object-fit: cover;
@@ -74,7 +94,7 @@
 
         .option:hover {
             background: #d6eaff;
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .option.selected {
@@ -82,148 +102,194 @@
             color: white;
         }
 
-        button {
-            width: 100%;
-            padding: 15px;
+        .navigation {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
             background: #66a6ff;
             color: white;
             border: none;
             border-radius: 15px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        button:hover {
-            background: #558de8;
-        }
+        button:hover { background: #558de8; }
 
         .result {
-            margin-top: 30px;
             text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #333;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .result h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
         }
 
         .result img {
             max-width: 100%;
-            margin-top: 15px;
             border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result p {
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
-    <h1>Quiz: Qual país combina com você?</h1>
-    <div class="quiz-container">
-        <!-- Pergunta 1 -->
-        <div class="question" data-question="1">
-            <h2>1. Qual tipo de clima você prefere?</h2>
-            <div class="options">
-                <div class="option" data-country="França">
-                    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="Clima ameno França">
-                    Clima ameno (Primavera/Outono)
-                </div>
-                <div class="option" data-country="EUA">
-                    <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad" alt="Clima variado EUA">
-                    Clima variado
-                </div>
-                <div class="option" data-country="Maldivas">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Clima tropical Maldivas">
-                    Clima tropical
-                </div>
-            </div>
-        </div>
+    <div class="quiz-container" id="quiz">
+        <h1>Qual país combina com você?</h1>
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
 
-        <!-- Pergunta 2 -->
-        <div class="question" data-question="2">
-            <h2>2. Qual estilo de viagem mais combina com você?</h2>
-            <div class="options">
-                <div class="option" data-country="França">
-                    <img src="https://images.unsplash.com/photo-1522098543979-ffc7f79d0f88" alt="Viagem cultural França">
-                    Turismo cultural e histórico
-                </div>
-                <div class="option" data-country="EUA">
-                    <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" alt="Viagem urbana EUA">
-                    Experiência urbana e entretenimento
-                </div>
-                <div class="option" data-country="Maldivas">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Viagem relax Maldivas">
-                    Relaxar em paisagens paradisíacas
-                </div>
-            </div>
-        </div>
+        <!-- Perguntas (uma por vez) -->
+        <div id="question-container"></div>
 
-        <!-- Pergunta 3 -->
-        <div class="question" data-question="3">
-            <h2>3. Qual comida você mais gosta?</h2>
-            <div class="options">
-                <div class="option" data-country="França">
-                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Comida francesa">
-                    Queijos, vinhos e culinária refinada
-                </div>
-                <div class="option" data-country="EUA">
-                    <img src="https://images.unsplash.com/photo-1561758033-9a32cfff9fdd" alt="Comida americana">
-                    Hambúrgueres, fast food e diversidade
-                </div>
-                <div class="option" data-country="Maldivas">
-                    <img src="https://images.unsplash.com/photo-1579033461380-adb47c3eb938" alt="Comida tropical Maldivas">
-                    Frutos do mar e comidas tropicais
-                </div>
-            </div>
+        <!-- Navegação -->
+        <div class="navigation">
+            <button id="prevBtn" disabled>Voltar</button>
+            <button id="nextBtn">Próximo</button>
         </div>
-
-        <button id="submit">Ver Resultado</button>
-        <div class="result" id="result"></div>
     </div>
 
     <script>
-        const options = document.querySelectorAll(".option");
-        const submitBtn = document.getElementById("submit");
-        const result = document.getElementById("result");
+        const questions = [
+            {
+                question: "Qual clima você prefere?",
+                options: [
+                    { text: "Clima ameno (Primavera/Outono)", country: "França", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34" },
+                    { text: "Clima variado", country: "EUA", img: "https://images.unsplash.com/photo-1505761671935-60b3a7427bad" },
+                    { text: "Clima tropical", country: "Maldivas", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" }
+                ]
+            },
+            {
+                question: "Qual estilo de viagem combina com você?",
+                options: [
+                    { text: "Turismo cultural e histórico", country: "França", img: "https://images.unsplash.com/photo-1522098543979-ffc7f79d0f88" },
+                    { text: "Experiência urbana e entretenimento", country: "EUA", img: "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" },
+                    { text: "Relaxar em paisagens paradisíacas", country: "Maldivas", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" }
+                ]
+            },
+            {
+                question: "Qual culinária te agrada mais?",
+                options: [
+                    { text: "Queijos, vinhos e alta gastronomia", country: "França", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836" },
+                    { text: "Hambúrgueres e diversidade de sabores", country: "EUA", img: "https://images.unsplash.com/photo-1561758033-9a32cfff9fdd" },
+                    { text: "Frutos do mar e comidas tropicais", country: "Maldivas", img: "https://images.unsplash.com/photo-1579033461380-adb47c3eb938" }
+                ]
+            },
+            {
+                question: "O que mais te atrai em uma viagem?",
+                options: [
+                    { text: "Arte, história e romance", country: "França", img: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f" },
+                    { text: "Compras e vida noturna agitada", country: "EUA", img: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59" },
+                    { text: "Contato com a natureza e tranquilidade", country: "Maldivas", img: "https://images.unsplash.com/photo-1526779259212-939e64758bb9" }
+                ]
+            },
+            {
+                question: "Que tipo de hospedagem prefere?",
+                options: [
+                    { text: "Hotéis charmosos no centro histórico", country: "França", img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34" },
+                    { text: "Grandes resorts ou hotéis temáticos", country: "EUA", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb" },
+                    { text: "Bangôs sobre o mar", country: "Maldivas", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
         let answers = [];
 
-        // Selecionar opções
-        options.forEach(option => {
-            option.addEventListener("click", () => {
-                const parent = option.closest(".options");
-                parent.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
-                option.classList.add("selected");
+        const quiz = document.getElementById("quiz");
+        const questionContainer = document.getElementById("question-container");
+        const progress = document.getElementById("progress");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            progress.style.width = `${((currentQuestion) / questions.length) * 100}%`;
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <h2>${q.question}</h2>
+                    <div class="options">
+                        ${q.options.map((opt, index) => `
+                            <div class="option ${answers[currentQuestion] === index ? 'selected' : ''}" data-index="${index}" data-country="${opt.country}">
+                                <img src="${opt.img}" alt="${opt.text}">
+                                ${opt.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.querySelectorAll(".option").forEach(opt => {
+                opt.addEventListener("click", () => {
+                    document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+                    opt.classList.add("selected");
+                    answers[currentQuestion] = parseInt(opt.dataset.index);
+                });
             });
-        });
 
-        // Calcular resultado
-        submitBtn.addEventListener("click", () => {
-            const selected = document.querySelectorAll(".option.selected");
-            if (selected.length < 3) {
-                result.textContent = "Por favor, responda todas as perguntas!";
-                return;
-            }
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === questions.length - 1 ? "Ver Resultado" : "Próximo";
+        }
 
+        function showResult() {
             let score = { "França": 0, "EUA": 0, "Maldivas": 0 };
-            selected.forEach(opt => score[opt.dataset.country]++);
+            questions.forEach((q, i) => {
+                const chosen = q.options[answers[i]];
+                score[chosen.country]++;
+            });
 
             let finalCountry = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
-
             let messages = {
-                "França": "Você combina com a França! 🇫🇷 Cultura, romance e boa gastronomia te esperam em Paris e além!",
-                "EUA": "Você combina com os Estados Unidos! 🇺🇸 Diversão, grandes cidades e diversidade cultural!",
-                "Maldivas": "Você combina com as Maldivas! 🇲🇻 Um paraíso tropical perfeito para descansar e recarregar!"
+                "França": "Você combina com a França! 🇫🇷 Cultura, romance e gastronomia de alto nível esperam por você!",
+                "EUA": "Você combina com os Estados Unidos! 🇺🇸 Diversão, modernidade e oportunidades em cada esquina!",
+                "Maldivas": "Você combina com as Maldivas! 🇲🇻 Um paraíso tropical para relaxar e renovar as energias!"
             };
-
             let images = {
                 "França": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
                 "EUA": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad",
                 "Maldivas": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
             };
 
-            result.innerHTML = `
-                <p>${messages[finalCountry]}</p>
-                <img src="${images[finalCountry]}" alt="${finalCountry}">
+            quiz.innerHTML = `
+                <div class="result">
+                    <h2>${messages[finalCountry]}</h2>
+                    <img src="${images[finalCountry]}" alt="${finalCountry}">
+                    <p>Baseado em suas respostas, encontramos o destino perfeito para você. Que tal começar a planejar essa viagem dos sonhos?</p>
+                </div>
             `;
+        }
+
+        nextBtn.addEventListener("click", () => {
+            if (answers[currentQuestion] == null) {
+                alert("Por favor, selecione uma opção antes de continuar!");
+                return;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
         });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        });
+
+        loadQuestion();
     </script>
 </body>
 </html>
