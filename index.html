@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Qual país combina com você?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #89f7fe, #66a6ff);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 30px 0;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 95%;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .option {
+            background: #f0f0f0;
+            border-radius: 15px;
+            padding: 15px;
+            flex: 1 1 calc(33% - 10px);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .option img {
+            max-width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        .option:hover {
+            background: #d6eaff;
+            transform: scale(1.05);
+        }
+
+        .option.selected {
+            background: #66a6ff;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: #66a6ff;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #558de8;
+        }
+
+        .result {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result img {
+            max-width: 100%;
+            margin-top: 15px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz: Qual país combina com você?</h1>
+    <div class="quiz-container">
+        <!-- Pergunta 1 -->
+        <div class="question" data-question="1">
+            <h2>1. Qual tipo de clima você prefere?</h2>
+            <div class="options">
+                <div class="option" data-country="França">
+                    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="Clima ameno França">
+                    Clima ameno (Primavera/Outono)
+                </div>
+                <div class="option" data-country="EUA">
+                    <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad" alt="Clima variado EUA">
+                    Clima variado
+                </div>
+                <div class="option" data-country="Maldivas">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Clima tropical Maldivas">
+                    Clima tropical
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 2 -->
+        <div class="question" data-question="2">
+            <h2>2. Qual estilo de viagem mais combina com você?</h2>
+            <div class="options">
+                <div class="option" data-country="França">
+                    <img src="https://images.unsplash.com/photo-1522098543979-ffc7f79d0f88" alt="Viagem cultural França">
+                    Turismo cultural e histórico
+                </div>
+                <div class="option" data-country="EUA">
+                    <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba" alt="Viagem urbana EUA">
+                    Experiência urbana e entretenimento
+                </div>
+                <div class="option" data-country="Maldivas">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Viagem relax Maldivas">
+                    Relaxar em paisagens paradisíacas
+                </div>
+            </div>
+        </div>
+
+        <!-- Pergunta 3 -->
+        <div class="question" data-question="3">
+            <h2>3. Qual comida você mais gosta?</h2>
+            <div class="options">
+                <div class="option" data-country="França">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Comida francesa">
+                    Queijos, vinhos e culinária refinada
+                </div>
+                <div class="option" data-country="EUA">
+                    <img src="https://images.unsplash.com/photo-1561758033-9a32cfff9fdd" alt="Comida americana">
+                    Hambúrgueres, fast food e diversidade
+                </div>
+                <div class="option" data-country="Maldivas">
+                    <img src="https://images.unsplash.com/photo-1579033461380-adb47c3eb938" alt="Comida tropical Maldivas">
+                    Frutos do mar e comidas tropicais
+                </div>
+            </div>
+        </div>
+
+        <button id="submit">Ver Resultado</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const options = document.querySelectorAll(".option");
+        const submitBtn = document.getElementById("submit");
+        const result = document.getElementById("result");
+        let answers = [];
+
+        // Selecionar opções
+        options.forEach(option => {
+            option.addEventListener("click", () => {
+                const parent = option.closest(".options");
+                parent.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
+                option.classList.add("selected");
+            });
+        });
+
+        // Calcular resultado
+        submitBtn.addEventListener("click", () => {
+            const selected = document.querySelectorAll(".option.selected");
+            if (selected.length < 3) {
+                result.textContent = "Por favor, responda todas as perguntas!";
+                return;
+            }
+
+            let score = { "França": 0, "EUA": 0, "Maldivas": 0 };
+            selected.forEach(opt => score[opt.dataset.country]++);
+
+            let finalCountry = Object.keys(score).reduce((a, b) => score[a] > score[b] ? a : b);
+
+            let messages = {
+                "França": "Você combina com a França! 🇫🇷 Cultura, romance e boa gastronomia te esperam em Paris e além!",
+                "EUA": "Você combina com os Estados Unidos! 🇺🇸 Diversão, grandes cidades e diversidade cultural!",
+                "Maldivas": "Você combina com as Maldivas! 🇲🇻 Um paraíso tropical perfeito para descansar e recarregar!"
+            };
+
+            let images = {
+                "França": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+                "EUA": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad",
+                "Maldivas": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+            };
+
+            result.innerHTML = `
+                <p>${messages[finalCountry]}</p>
+                <img src="${images[finalCountry]}" alt="${finalCountry}">
+            `;
+        });
+    </script>
+</body>
+</html>
